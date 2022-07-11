@@ -12,8 +12,8 @@ class Block:
 
 class BlockChain(Block):
 	def __init__(self):
-		self.digit = 3
-		self.mining_limit = 100000
+		self.digit = 4
+		self.mining_limit = 1000000
 	
 	def make_new_block(self):
 		return Block()
@@ -26,41 +26,60 @@ class BlockChain(Block):
 		required_head = "0" * self.digit
 		return target_hash.startswith(required_head)
 	
-	def make_target_hash(self, id, log, pow):
-		target = str(id) + str(log) + str(pow)
-		target_hash = self.sha256(target)
+	def get_hash_by_param(self, id, log, prev_hash, pow):
+		target_str = str(id) + str(log) + str(prev_hash) + str(pow)
+		target_hash = self.sha256(target_str)
 		return target_hash
 
-	def make_pow(self, id, log):
-		mining_limit = self.mining_limit
-		for i in range(mining_limit):
-			target_hash = self.make_target_hash(id, log, i)
-			if(DEBUG):
-				print("target_hash {:<3}: {}".format(i, target_hash))
-			if(self.check_hash(target_hash)):
-				return i
-		
-	def mining(self, block):
+	def make_pow(self, block):
 		id = block.id
 		log = block.log
-		pow = self.make_pow(id, log)
+		prev_hash = block.prev_hash
+
+		init_pow = 0
+		init_target_hash = self.get_hash_by_param(id, log, prev_hash, init_pow)		
+		
+		pow = init_pow
+		target_hash = init_target_hash
+
+		while(not self.check_hash(target_hash)):
+			target_hash = self.get_hash_by_param(id, log, prev_hash, pow)
+			if(DEBUG):
+				print("target_hash {:<3}: {}".format(pow, target_hash))
+			pow += 1
+		return pow - 1
+	def mining(self, block):
+		pow = self.make_pow(block)
 		block.pow = pow
 	
 	def validation(self, block):
-
 		id = block.id
 		log = block.log
 		pow = block.pow
-		target_hash = self.make_target_hash(id, log, pow)
+		prev_hash = block.prev_hash
+		target_hash = self.get_hash_by_param(id, log, prev_hash, pow)
 		valid_f = self.check_hash(target_hash)
 		return valid_f
 
+	def print_column(self, name, num):
+		print("|{:<12}:{:>40}   |".format(name, num))		
 	def view(self, block):
 		id = block.id
 		log = block.log
 		pow = block.pow
+		prev_hash = block.prev_hash
 		print("-" * len("|{:<12}:{:>40}   |".format("id", id)))
-		print("|{:<12}:{:>40}   |".format("id", id))
-		print("|{:<12}:{:>40}   |".format("log", log))
-		print("|{:<12}:{:>40}   |".format("pow", pow))
+		self.print_column("prev_hash", prev_hash)
+		self.print_column("id", id)
+		self.print_column("log", log)
+		self.print_column("pow", pow)
+
 		print("-" * len("|{:<12}:{:>40}   |".format("id", id)))
+
+	def get_hash_by_block(self, block):
+		id = block.id
+		log = block.log
+		pow = block.pow
+		prev_hash = block.prev_hash
+		hash = self.get_hash_by_param(id, log, prev_hash, pow)
+		return hash

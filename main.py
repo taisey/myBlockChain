@@ -9,14 +9,19 @@ def test():
 
 	myBC = bc.BlockChain()
 	
+	#マイニング 前
+	print("\nbefore mining")
+	myBC.view(myBlock)
+	print("validation:", myBC.validation(myBlock))
 	#ブロックのPOWをマイニング 
 	myBC.mining(myBlock)
-
-	print("POW:", myBlock.pow)
-
+	#POWが正しいか確認
+	print("\nafter mining")
+	myBC.view(myBlock)
 	#POWが正しいか確認
 	print("validation:", myBC.validation(myBlock))
 
-	myBC.view(myBlock)
+	print("\nblock hash:",myBC.get_hash_by_block(myBlock))
+
 if __name__ == '__main__':
 	test()
