@@ -1,10 +1,11 @@
 import module.blockchain as bc
 
 def test():
-	#ブロックを作成
-	myBlock = bc.Block()
-	myBlock.log = "hello world"
+	myBC = bc.BlockChain()
 
+	#ブロックを作成
+	myBlock = myBC.make_new_block()
+	myBlock.log = "hello world"
 
 	myBC = bc.BlockChain()
 	

@@ -1,12 +1,14 @@
 import hashlib
+import uuid
 
 DEBUG = 0
 class Block:
 	def __init__(self):
-		self.id = 1
+		self.id = str(uuid.uuid4())
 		self.log = ""
 		#Proof of Work
-		self.pow = "Not Registerd"
+		self.pow = "Not Registered"
+		self.prev_hash = "Not Registered"
 
 class BlockChain(Block):
 	def __init__(self):
@@ -15,6 +17,7 @@ class BlockChain(Block):
 	
 	def make_new_block(self):
 		return Block()
+	
 	def sha256(self, target):
 		target_hash = str(hashlib.sha256(target.encode('utf-8')).hexdigest())
 		return target_hash
@@ -56,8 +59,8 @@ class BlockChain(Block):
 		id = block.id
 		log = block.log
 		pow = block.pow
-		print("--------------------------------------")
-		print("|{:<12}:{:>20}   |".format("id", id))
-		print("|{:<12}:{:>20}   |".format("log", log))
-		print("|{:<12}:{:>20}   |".format("pow", pow))
-		print("--------------------------------------")
+		print("-" * len("|{:<12}:{:>40}   |".format("id", id)))
+		print("|{:<12}:{:>40}   |".format("id", id))
+		print("|{:<12}:{:>40}   |".format("log", log))
+		print("|{:<12}:{:>40}   |".format("pow", pow))
+		print("-" * len("|{:<12}:{:>40}   |".format("id", id)))
