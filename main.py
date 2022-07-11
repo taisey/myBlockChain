@@ -6,17 +6,16 @@ def test():
 	myBlock.log = "hello world"
 
 
-	myBC = bc.BlockChain(myBlock)
+	myBC = bc.BlockChain()
 	
-	#ブロックをマイニング 
-	myBC.mining()
+	#ブロックのPOWをマイニング 
+	myBC.mining(myBlock)
 
-	print("POW:", myBC.block.pow)
+	print("POW:", myBlock.pow)
 
 	#POWが正しいか確認
-	myBC.validation()
-	print("validation:", myBC.validation())
+	print("validation:", myBC.validation(myBlock))
 
-	myBC.view()
+	myBC.view(myBlock)
 if __name__ == '__main__':
 	test()

@@ -9,11 +9,12 @@ class Block:
 		self.pow = "Not Registerd"
 
 class BlockChain(Block):
-	def __init__(self, block):
+	def __init__(self):
 		self.digit = 3
-		self.block = block
 		self.mining_limit = 100000
 	
+	def make_new_block(self):
+		return Block()
 	def sha256(self, target):
 		target_hash = str(hashlib.sha256(target.encode('utf-8')).hexdigest())
 		return target_hash
@@ -36,15 +37,14 @@ class BlockChain(Block):
 			if(self.check_hash(target_hash)):
 				return i
 		
-	def mining(self):
-		block = self.block
+	def mining(self, block):
 		id = block.id
 		log = block.log
 		pow = self.make_pow(id, log)
 		block.pow = pow
 	
-	def validation(self):
-		block = self.block
+	def validation(self, block):
+
 		id = block.id
 		log = block.log
 		pow = block.pow
@@ -52,8 +52,7 @@ class BlockChain(Block):
 		valid_f = self.check_hash(target_hash)
 		return valid_f
 
-	def view(self):
-		block = self.block
+	def view(self, block):
 		id = block.id
 		log = block.log
 		pow = block.pow
