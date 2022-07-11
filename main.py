@@ -1,20 +1,21 @@
 import module.blockchain as bc
 
-def test():
+#ブロックを1つ作成
+def test1():
 	myBC = bc.BlockChain()
 
 	#ブロックを作成
 	myBlock = myBC.make_new_block()
 	myBlock.log = "hello world"
+	myBlock.name = "Block1"
 
-	myBC = bc.BlockChain()
 	
 	#マイニング 前
 	print("\nbefore mining")
 	myBC.view(myBlock)
 	print("validation:", myBC.validation(myBlock))
 	#ブロックのPOWをマイニング 
-	myBC.mining(myBlock)
+	myBC.set_correct_pow(myBlock)
 	#POWが正しいか確認
 	print("\nafter mining")
 	myBC.view(myBlock)
@@ -23,5 +24,34 @@ def test():
 
 	print("\nblock hash:",myBC.get_hash_by_block(myBlock))
 
+def test2():
+	myBC = bc.BlockChain()
+
+	#ブロック1を作成
+	myBlock1 = myBC.make_new_block()
+	myBlock1.log = "hello world"
+	myBlock1.name = "Block1"
+
+	#ブロック2を作成
+	myBlock2 = myBC.make_new_block()
+	myBlock2.log = "goobye world"
+	myBlock2.name = "Block2"	
+
+	#ブロック1のマイニング 
+	myBC.set_correct_pow(myBlock1)
+	myBC.view(myBlock1)
+
+	myBC.connect_blocks(myBlock2, myBlock1)
+	myBC.view(myBlock2)
+	
+
 if __name__ == '__main__':
-	test()
+	print("***"* 10, "test1", "***"* 10)
+	test1()
+	print("\n\n\n\n")
+
+
+	print("***"* 10, "test2", "***"* 10)
+	test2()
+	print("\n\n\n\n")
+
