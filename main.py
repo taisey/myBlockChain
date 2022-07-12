@@ -6,7 +6,7 @@ def test1():
 
 	#ブロックを作成
 	myBlock = myBC.make_new_block()
-	myBlock.log = "hello world"
+	myBlock.transactions = "hello world"
 	myBlock.name = "Block1"
 
 	
@@ -29,12 +29,12 @@ def test2():
 
 	#ブロック1を作成
 	myBlock1 = myBC.make_new_block()
-	myBlock1.log = "hello world"
+	myBlock1.transactions = "hello world"
 	myBlock1.name = "Block1"
 
 	#ブロック2を作成
 	myBlock2 = myBC.make_new_block()
-	myBlock2.log = "goobye world"
+	myBlock2.transactions = "goobye world"
 	myBlock2.name = "Block2"	
 
 	#ブロック1のマイニング 
